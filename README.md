@@ -1,5 +1,5 @@
 # Recency Frequency and Monetary Analysis using SQL and Tableau
-Dashboard created for this analysis can be found [here]
+Dashboard created for this analysis can be found [here](https://public.tableau.com/app/profile/pat.dan/viz/RFMDashboard_2_0/Dashboard1?publish=yes)
 
 SQL code for this project is uploaded [here]
 
