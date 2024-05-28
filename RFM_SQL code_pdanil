@@ -1,0 +1,141 @@
+/*selecting raw data from rfm table, filtering out dates from 1 year 2010-12-01 - 2011-12-01*/
+WITH
+  raw AS
+  (SELECT *
+  FROM `turing_data_analytics.rfm`
+  WHERE InvoiceDate BETWEEN '2010-12-01' AND '2011-12-02'
+  ORDER BY InvoiceDate DESC),
+
+/*coumputing value for monetary, filtering out values < 0 and null customers*/
+  t1 AS
+  (SELECT
+    customerid AS customer,
+    DATE_TRUNC(invoicedate, day) AS invoice_date,
+    invoiceNo AS invoice_no,
+    (quantity * unitprice) AS value
+  FROM raw
+  WHERE (quantity * unitprice) > 0 AND customerid IS NOT NULL),
+
+  /*selecting last invoice for computing recency, computing frequency and monetary*/
+  t2 AS
+  (SELECT
+    customer,
+    MAX(invoice_date) AS latest_invoice,
+    COUNT(DISTINCT(invoice_no)) AS frequency,
+    SUM(value) AS monetary
+  FROM t1
+  GROUP BY 1
+  HAVING monetary > 0),
+
+  /*coumputing recency; result 4300 rows; validated with tc table - all correct*/
+  t3 AS
+  (SELECT
+    customer,
+    DATE_DIFF((SELECT MAX(invoicedate) FROM raw), latest_invoice, day) AS recency,
+    frequency,
+    monetary
+  FROM t2
+  ORDER BY 1),
+
+  /*determine quantiles for RFM*/
+  t4 AS
+  (SELECT
+    a.*,
+    b.percentiles[offset(25)] AS m25,
+    b.percentiles[offset(50)] AS m50,
+    b.percentiles[offset(75)] AS m75,
+    b.percentiles[offset(100)] AS m100,
+    c.percentiles[offset(25)] AS f25,
+    c.percentiles[offset(50)] AS f50,
+    c.percentiles[offset(75)] AS f75,
+    c.percentiles[offset(100)] AS f100,
+    d.percentiles[offset(25)] AS r25,
+    d.percentiles[offset(50)] AS r50,
+    d.percentiles[offset(75)] AS r75,
+    d.percentiles[offset(100)] AS r100
+FROM
+    t3 a,
+    (SELECT APPROX_QUANTILES(monetary, 100) percentiles FROM
+    t3) b,
+    (SELECT APPROX_QUANTILES(frequency, 100) percentiles FROM
+    t3) c,
+    (SELECT APPROX_QUANTILES(recency, 100) percentiles FROM
+    t3) d),
+
+/*assigning scores for RFM*/
+t5 AS
+(SELECT *
+    FROM (
+        SELECT *,
+        CASE WHEN monetary <= m25 THEN 1
+            WHEN monetary <= m50 AND monetary > m25 THEN 2
+            WHEN monetary <= m75 AND monetary > m50 THEN 3
+            WHEN monetary <= m100 AND monetary > m75 THEN 4
+        END AS monetary_score,
+        CASE WHEN frequency <= f25 THEN 1
+            WHEN frequency <= f50 AND frequency > f25 THEN 2
+            WHEN frequency <= f75 AND frequency > f50 THEN 3
+            WHEN frequency <= f100 AND frequency > f75 THEN 4
+        END AS frequency_score,
+        --Recency scoring is reversed
+        CASE WHEN recency <= r25 THEN 4
+            WHEN recency <= r50 AND recency > r25 THEN 3
+            WHEN recency <= r75 AND recency > r50 THEN 2
+            WHEN recency <= r100 AND recency > r75 THEN 1
+        END AS recency_score,
+        FROM t4)),
+
+
+  t6 AS
+  (SELECT
+    customer,
+    recency,
+    frequency,
+    monetary,
+    recency_score,
+    frequency_score,
+    monetary_score
+  FROM t5
+  ORDER BY 1),
+
+/*assigning RFM score; result - 62 combinations; validated with TC table*/
+  t7 AS
+  (SELECT
+    customer,
+    recency,
+    frequency,
+    monetary,
+    recency_score,
+    frequency_score,
+    monetary_score,
+    CONCAT(recency_score, frequency_score, monetary_score) AS RFM_score
+  FROM t6),
+
+  /*assining segments*/
+  T8 AS (SELECT
+  customer,
+  recency,
+  frequency,
+  monetary,
+  recency_score,
+  frequency_score,
+  monetary_score,
+  RFM_score,
+  CASE
+    WHEN RFM_score = '444' THEN 'Best customers'
+    WHEN RFM_score = '111' THEN 'Lost customers'
+    WHEN RFM_score IN ('222', '221', '213', '212', '211', '142', '141', '132', '131', '122', '121', '113', '112') THEN 'About to sleep'
+    WHEN RFM_score IN('244','243','242','234','233','232','231','224','223' ) THEN 'At risk'
+    WHEN RFM_score IN ('414', '314', '214', '114' ) THEN 'Big spenders'
+    WHEN RFM_score IN ('144','143','134','133','124','123' ) THEN 'Cant lose them'
+    WHEN RFM_score IN ('443', '442', '441', '344', '343', '342', '334' ) THEN 'Loyal customers'
+    WHEN RFM_score IN ('434','433','432','431','424','423' ) THEN 'Potential loyalists'
+    WHEN RFM_score IN ('422', '421', '413', '412', '411' ) THEN 'Recent customers'
+  ELSE
+  'Needing attention'
+END
+  AS segment
+FROM
+  t7)
+
+  SELECT * from t8 order by 1;
