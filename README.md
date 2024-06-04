@@ -1,4 +1,7 @@
 # Recency Frequency and Monetary Analysis using SQL and Tableau
+
+## Access to the project
+
 Dashboard created for this analysis can be found [here](https://public.tableau.com/app/profile/pat.dan/viz/RFMDashboard_2_0/Dashboard1?publish=yes)
 
 SQL code for this project is uploaded [here](https://github.com/PatrycjaDanilczuk/RFM-and-Segmentation-using-SQL-and-Tableau/blob/main/RFM_SQL%20code_pdanil)
@@ -6,7 +9,9 @@ SQL code for this project is uploaded [here](https://github.com/PatrycjaDanilczu
 ## Project description
 Prepare RFM (Recency, Frequency, Monetary) analysis and customer segmentation based on the “rfm” data table hosted in BigQuery project. 
 
-**Dataset details:** The dataset contains information on customer transactions, including their ID, purchase dates, quantity, and monetary value. Segment customers on RFM scores and provide insights for the marketing department.
+## About the dataset
+
+The rfm dataset is hosted in BigQuery. The table contains information on customer transactions, including their ID, purchase dates, quantity, and monetary value. Segment customers on RFM scores and provide insights for the marketing department.
 
 **rfm schema**
 
@@ -22,7 +27,7 @@ Prepare RFM (Recency, Frequency, Monetary) analysis and customer segmentation ba
 | Country | STRING | NULLABLE	|
 
 
-## Steps applied
+## Steps description
 ### Step 1: Data Preparation
 Identifying necessary columns for RFM Analysis.
 Filtering transactions for the time span from 2010-12-01 to 2011-12-01.
