@@ -2,7 +2,7 @@
 
 ## Access to the project
 
-Dashboard created for this analysis can be found [here](https://public.tableau.com/app/profile/pat.dan/viz/RFMDashboard_2_0/Dashboard1?publish=yes)
+Dashboard created for this project can be found here: [RFM analysis Tableau Dasboard](https://public.tableau.com/app/profile/pat.dan/viz/RFMDashboard_2_0/Dashboard1?publish=yes)
 
 SQL code for this project is uploaded [here](https://github.com/PatrycjaDanilczuk/RFM-and-Segmentation-using-SQL-and-Tableau/blob/main/RFM_SQL%20code_pdanil)
 
