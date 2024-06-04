@@ -4,7 +4,23 @@ Dashboard created for this analysis can be found [here](https://public.tableau.c
 SQL code for this project is uploaded [here](https://github.com/PatrycjaDanilczuk/RFM-and-Segmentation-using-SQL-and-Tableau/blob/main/RFM_SQL%20code_pdanil)
 
 ## Project description
-Prepare RFM (Recency, Frequency, Monetary) analysis and customer segmentation based on the “rfm” data table hosted in BigQuery project. The dataset contains information on customer transactions, including their ID, purchase dates, quantity, and monetary value. Segment customers on RFM scores and provide insights for the marketing department.
+Prepare RFM (Recency, Frequency, Monetary) analysis and customer segmentation based on the “rfm” data table hosted in BigQuery project. 
+
+**Dataset details:** The dataset contains information on customer transactions, including their ID, purchase dates, quantity, and monetary value. Segment customers on RFM scores and provide insights for the marketing department.
+
+**rfm schema**
+
+| Field name | Type | Mode |
+|---------------|-----------|-----------|
+| InvoiceNo | STRING | NULLABLE |
+| StockCode | STRING | NULLABLE |
+| Description | STRING | NULLABLE |
+| Quantity | INTEGER | NULLABLE |
+| InvoiceDate | TIMESTAMP | NULLABLE |	
+| UnitPrice | FLOAT | NULLABLE |
+| CustomerID | INTEGER | NULLABLE |
+| Country | STRING | NULLABLE	|
+
 
 ## Steps applied
 ### Step 1: Data Preparation
