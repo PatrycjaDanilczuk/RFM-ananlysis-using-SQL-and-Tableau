@@ -33,6 +33,8 @@ Specifically, segmentation helps a company:
 
 The rfm dataset is hosted in BigQuery. The table contains information on customer transactions, including their ID, purchase dates, quantity, and monetary value. Segment customers on RFM scores and provide insights for the marketing department.
 
+The rfm dataset contains 541.909 rows and 8 columns.
+
 **rfm schema**
 
 | Field name | Type | Mode |
@@ -47,7 +49,10 @@ The rfm dataset is hosted in BigQuery. The table contains information on custome
 | Country | STRING | NULLABLE	|
 
 
-## Steps description
+## SQL code
+
+Transformed rfm data (451.909 trabsactions) into table of customers (4.300 rows) with applied RFM score and Segment name. Retrieved additional tables with Country and Products for more in-depth analysis.
+
 ### Step 1: Data Preparation
 Identifying necessary columns for RFM Analysis.
 Filtering transactions for the time span from 2010-12-01 to 2011-12-01.
@@ -63,6 +68,7 @@ Creating customer segments: Best Customers, Loyal Customers, Potential Loyalists
 Selecting all relevant columns for the final analysis table.
 ### Step 5: Getting additional data
 Creating additional tables with Country and Products for more in-depth analysis.
-### Step 6: Visualization and Insights
+
+## Visualization and Insights
 Creating Tableau Dashboard for analysis.
 Providing insights for customer engagement and retention strategies based on RFM segments.
