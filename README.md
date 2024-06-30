@@ -51,7 +51,7 @@ The rfm dataset contains 541.909 rows and 8 columns.
 
 ## SQL code
 
-Transformed rfm data (451.909 transactions) into table of distinct customers (4.300 rows) with applied RFM score and Segment name. Retrieved additional tables with Country and Products for more in-depth analysis.
+Transformed rfm data (451.909 transactions) into table of distinct customers (4.300 rows) with Recency, Frequency, Monetary values, R, M, F scores, RFM score and Segment name. Retrieved additional tables with Country and Products for more in-depth analysis.
 
 ### Step 1: Data Preparation
 Identifying necessary columns for RFM Analysis.
