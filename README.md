@@ -31,7 +31,7 @@ Specifically, segmentation helps a company:
 
 ## About the dataset
 
-The rfm dataset is hosted in BigQuery. The table contains information on customer transactions, including their ID, purchase dates, quantity, and monetary value. Segment customers on RFM scores and provide insights for the marketing department.
+The rfm dataset is hosted in BigQuery. The table contains information on customer transactions, including their ID, purchase dates, quantity, and monetary value.
 
 The rfm dataset contains 541.909 rows and 8 columns.
 
